@@ -3,7 +3,7 @@ body {
     font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-.h1-bookly {
+.headline {
     margin-top: 50px;
     font-size: 40px;
     display: flex;
@@ -21,7 +21,7 @@ body {
     text-align: center;
 }
 
-.h2-signup {
+.title {
     margin: 0px;
     margin: 0px;
     font-size: 30px;
@@ -34,7 +34,7 @@ body {
     font-size: 17px;
 }
 
-.input-signup {
+.input-field {
     height: 30px;
     width: 100%;
     box-sizing: border-box;
@@ -44,13 +44,11 @@ body {
     margin: 7px 0px;
     font-family: "Plus Jakarta Sans", sans-serif;
 }
-
-.input-signup::placeholder {
+.input-field::placeholder {
     color: #B0A9A9;
     opacity: 1;
 }
-
-.input-signup:focus {
+.input-field:focus {
     border-color: #EAEAEA;
     outline: none;
     box-shadow: 0px 1px 15px rgba(126, 126, 126, 0.3);
@@ -100,12 +98,33 @@ body {
     text-align: center;
     margin: 15px 0px 0px 0px;
     padding: 0px;
+    text-decoration: none;
+    color: black;
 }
 .p-login a {
     cursor: pointer;
     transition: color 0.2s ease-in-out;
 }
 .p-login a:hover {
+    color: #5d9b01;
+}
+
+.error-text {
+    font-size: 12px;
+    color: #ff5f5d;
+    font-weight: 600;
+}
+
+.p-forgot {
+    font-size: 12px;
+    text-align: left;
+    margin-top: 0px;
+    transition: color 0.2s ease-in-out;
+    cursor: pointer;
+    padding-left: 20px;
+    width: 120px;
+}
+.p-forgot:hover {
     color: #5d9b01;
 }
 
