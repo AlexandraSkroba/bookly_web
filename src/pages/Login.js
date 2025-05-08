@@ -13,7 +13,7 @@ export const Login = () => {
       bottomText={
         <span>
           New User?{" "}
-          <Link to="/" className="p-login">
+          <Link to="/signup" className="p-login">
             <b>Register</b>
           </Link>
         </span>
