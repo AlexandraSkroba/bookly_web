@@ -1,9 +1,25 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { fetchAuthStatus } from "../utils/auth";
 
 export const Layout = ({ children }) => {
   const navigate = useNavigate();
-  const [username] = useState("Alexandra");
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    fetchAuthStatus().then((user) => {
+      if (user) setUsername(user.email);
+    });
+  }, []);
+
+  const protectedNavigate = (path) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate(path);
+    } else {
+      navigate("/signup");
+    }
+  };
 
   const handleProfileClick = () => {
     if (username) {
@@ -13,36 +29,23 @@ export const Layout = ({ children }) => {
     }
   };
 
-  const handleLogoClick = () => {
-    navigate("/");
-  };
-
-  const handleCatalogClick = () => {
-    navigate("/catalog");
-  };
-
-  const handleMyBooksClick = () => {
-    navigate("/my-books");
-  };
-
-  const handleChatsClick = () => {
-    navigate("/chats");
-  };
-
   return (
     <div className="page-container">
       <header>
-        <h1 className="logo" onClick={handleLogoClick}>
+        <h1 className="logo" onClick={() => navigate("/")}>
           BOOKLY
         </h1>
         <nav className="nav-bar">
-          <a onClick={handleMyBooksClick} className="nav-item">
+          <a
+            onClick={() => protectedNavigate("/my-books")}
+            className="nav-item"
+          >
             MY BOOKS
           </a>
-          <a onClick={handleChatsClick} className="nav-item">
+          <a onClick={() => protectedNavigate("/chats")} className="nav-item">
             CHATS
           </a>
-          <a onClick={handleCatalogClick} className="nav-item">
+          <a onClick={() => protectedNavigate("/catalog")} className="nav-item">
             CATALOG
           </a>
         </nav>
@@ -53,7 +56,6 @@ export const Layout = ({ children }) => {
       </header>
 
       <main className="content">{children}</main>
-
       <footer></footer>
     </div>
   );

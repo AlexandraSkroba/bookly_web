@@ -23,7 +23,7 @@ export class AuthForm extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = this.state;
-    const { apiEndpoint, navigate, mode } = this.props;
+    const { apiEndpoint, navigate, mode, login } = this.props;
 
     try {
       const response = await axios.post(apiEndpoint, { email, password });
@@ -33,7 +33,13 @@ export class AuthForm extends Component {
         navigate("/confirm-email", { state: { email } });
       }
 
-      console.log(`${this.props.mode} response:`, response.data);
+      if (mode === "login") {
+        localStorage.setItem("token", response.data.access_token);
+        navigate("/catalog");
+        return;
+      }
+
+      console.log(`${mode} response:`, response.data);
     } catch (error) {
       if (error.response) {
         const messages = Array.isArray(error.response.data.message)

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../pages/Profile.css";
 import { Layout } from "../components/Layout";
+import { useAuth } from "../context/AuthContext";
 
 const genreOptions = [
   "Фэнтези",
@@ -14,17 +15,28 @@ const genreOptions = [
 
 function Profile() {
   const [editMode, setEditMode] = useState(false);
-  const [name, setName] = useState("AALEXANDRA");
-  const [city, setCity] = useState("Minsk");
-  const [genres, setGenres] = useState(["Фэнтези", "Детектив"]);
+  const [name] = useState("AALEXANDRA");
+  const [city] = useState("Minsk");
+  const [genres] = useState(["Фэнтези", "Детектив"]);
   const [newGenre, setNewGenre] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [confirmText, setConfirmText] = useState("");
+  const [shake, setShake] = useState(false);
+
+  const [user, setUser] = useState({
+    name: "AALEXANDRA",
+    city: "Minsk",
+    genres: ["Фэнтези", "Детектив"],
+    avatar: "/avatars/ava1.jpg",
+  });
 
   const toggleGenre = (genre) => {
-    setGenres((prev) =>
-      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
-    );
+    setUser((prevUser) => ({
+      ...prevUser,
+      genres: prevUser.genres.includes(genre)
+        ? prevUser.genres.filter((g) => g !== genre)
+        : [...prevUser.genres, genre],
+    }));
   };
 
   const handleDelete = () => {
@@ -33,29 +45,58 @@ function Profile() {
       // отправь запрос на удаление здесь
       setShowDeleteModal(false);
     } else {
-      alert("Wrong confirmation text!");
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
     }
   };
+
+  const { logout } = useAuth();
 
   return (
     <Layout>
       <div className="profile-container">
         <div className="profile-card">
-          <div className={`avatar ${editMode ? "editable-avatar" : ""}`}>
-            {editMode && <span>CHANGE</span>}
+          <div
+            className={`avatar-wrapper ${editMode ? "editable-avatar" : ""}`}
+          >
+            <label className="avatar-label">
+              <img src={user.avatar} alt="Avatar" className="avatar-img" />
+              {editMode && <span className="change-text">CHANGE</span>}
+              {editMode && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setUser((prev) => ({ ...prev, avatar: reader.result }));
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  style={{ display: "none" }}
+                />
+              )}
+            </label>
           </div>
 
           {editMode ? (
             <>
               <input
                 className="edit-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={user.name}
+                onChange={(e) =>
+                  setUser((prev) => ({ ...prev, name: e.target.value }))
+                }
               />
               <input
                 className="edit-city"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
+                value={user.city}
+                onChange={(e) =>
+                  setUser((prev) => ({ ...prev, city: e.target.value }))
+                }
               />
             </>
           ) : (
@@ -103,7 +144,7 @@ function Profile() {
                 </div>
               </div>
             ) : (
-              <p>{genres.join(", ")}</p>
+              <p>{user.genres.join(", ")}</p>
             )}
           </div>
 
@@ -137,7 +178,9 @@ function Profile() {
                 >
                   Edit
                 </button>
-                <button className="logout-button">Logout</button>
+                <button className="logout-button" onClick={logout}>
+                  Logout
+                </button>
                 <button
                   className="delete-button"
                   onClick={() => setShowDeleteModal(true)}
@@ -152,7 +195,7 @@ function Profile() {
 
       {showDeleteModal && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className={`modal-content ${shake ? "shake" : ""}`}>
             <div className="modal-header">DELETE ACCOUNT?</div>
             <p>
               To delete an account, enter <b>DELETE ACCOUNT</b> in the box
