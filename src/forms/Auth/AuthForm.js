@@ -23,11 +23,15 @@ export class AuthForm extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = this.state;
-    const { apiEndpoint } = this.props;
+    const { apiEndpoint, navigate, mode } = this.props;
 
     try {
       const response = await axios.post(apiEndpoint, { email, password });
       this.setState({ success: response.data.message, errors: [] });
+
+      if (mode === "signup") {
+        navigate("/confirm-email", { state: { email } });
+      }
 
       console.log(`${this.props.mode} response:`, response.data);
     } catch (error) {

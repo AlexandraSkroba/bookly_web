@@ -1,0 +1,116 @@
+.mybook-container {
+  background-color: #ffffff;
+  height: 60vh;
+  margin: 50px 100px;
+  border-radius: 87px;
+  padding: 40px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  overflow: hidden;
+}
+
+/* Заголовок */
+.my-books {
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: -20px;
+  margin-bottom: 35px;
+}
+
+/* Прокручивающаяся область */
+.mybook-table-scroll {
+  max-height: calc(
+    60vh - 40px /*padding top*/ - 40px /*padding bottom*/ - 60px
+      /*заголовок+кнопка*/
+  );
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Убираем скроллбар */
+.mybook-table-scroll::-webkit-scrollbar {
+  display: none;
+}
+.mybook-table-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.mybook-table {
+  margin-left: 140px;
+  margin-right: 65px;
+  border-collapse: collapse;
+  width: 60%;
+}
+
+.mybook-table th {
+  text-align: center;
+  padding: 0px 110px 20px 110px;
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.mybook-table td {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 16px;
+  border-bottom: 1px solid #ddd;
+}
+.mybook-table th:not(:last-child),
+.mybook-table td:not(:last-child) {
+  border-right: 1px solid #ddd;
+}
+.mybook-table th:first-child,
+.mybook-table td:first-child {
+  width: 80px;
+}
+.mybook-table th:nth-child(2),
+.mybook-table td:nth-child(2) {
+  width: 100px;
+}
+.mybook-table th:nth-child(3),
+.mybook-table td:nth-child(3) {
+  width: 100px;
+}
+
+.myline-extension-row td {
+  padding: 0;
+  height: 10px;
+  border-top: none;
+  border-bottom: none;
+}
+.myline-extension-row td:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0.1px;
+  height: 10px;
+  background-color: #ddd;
+}
+
+/* Кнопка ADD — выровнять вправо и прижать к низу */
+.add-btn {
+  align-self: flex-end;
+  margin-top: 20px;
+  padding: 13px 60px;
+  border: none;
+  border-radius: 50px;
+  background-color: #dbf9ac;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  font-family: "Plus Jakarta Sans", sans-serif;
+
+  transition: 0.5s ease-in-out;
+}
+.add-btn:hover {
+  cursor: pointer;
+  box-shadow: 0px 1px 15px rgba(126, 126, 126, 0.3);
+}

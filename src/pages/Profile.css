@@ -1,0 +1,326 @@
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.profile-card {
+  background-color: white;
+  border-radius: 40px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  width: 100%;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #dbf9ac;
+  margin: 0 auto 20px auto;
+}
+
+.username {
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.profile-city {
+  margin-top: 0px;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.section strong {
+  margin-bottom: 0px;
+  font-size: 20px;
+}
+
+.section p {
+  margin-top: 0px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+}
+
+.track {
+  margin-top: 40px;
+}
+
+.track-input {
+  font-weight: 500;
+  width: 60%;
+  padding: 10px;
+  border-radius: 30px;
+  border: 4px solid #dbf9ac;
+  margin-top: 7px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 16px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.track-input::placeholder {
+  color: #b1b1b1;
+}
+
+.track-input:focus {
+  border: 4px solid #dbf9ac;
+  outline: none;
+}
+
+.search-button {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 20px;
+  background-color: #dbf9ac;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+}
+
+.edit-button,
+.logout-button,
+.delete-button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 30px;
+  font-weight: 700;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.edit-button {
+  background-color: #dbf9ac;
+  border: none;
+}
+
+.logout-button {
+  background-color: white;
+  border: 5px solid #dbf9ac;
+}
+
+.delete-button {
+  background-color: white;
+  border: 5px solid #f9acac;
+  color: #000;
+}
+
+/* --------- EDIT MODE --------------------------------- */
+
+.edit-name {
+  margin-bottom: 0px;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: center;
+  background-color: #efefef;
+  border: none;
+  border-radius: 10px;
+  padding: 3px 0px;
+}
+
+.edit-city {
+  margin-top: 7px;
+  text-align: center;
+  background-color: #efefef;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 0px;
+}
+.edit-name:focus,
+.edit-city:focus {
+  box-shadow: inset 0 0 0 2px #b1b1b1;
+  outline: none;
+}
+
+.editable-avatar {
+  position: relative;
+  background-color: #7a8c5f;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.editable-avatar span {
+  pointer-events: none;
+}
+
+.genre-edit-container {
+  margin-top: 10px;
+}
+
+.selected-genres {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 10px 0px;
+  border-radius: 10px;
+  background-color: #efefef;
+}
+
+.genre-tag {
+  background: #dbdbdb;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+}
+.genre-tag button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.genre-list {
+  color: #989898;
+  font-weight: 600;
+  max-height: 170px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  overflow-y: auto;
+  border-radius: 10px;
+  padding: 5px;
+  text-align: left;
+  margin-bottom: -60px;
+  background-color: #fafafa;
+  border: none;
+  /* overflow-x: hidden; */
+}
+.input-add-new {
+  font-family: "Montserrat", sans-serif;
+  color: #989898;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #fafafa;
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input-add-new:focus {
+  outline: none;
+}
+
+.genre-option {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #b6b6b6;
+}
+.genre-option:hover {
+  background-color: #f0f0f0;
+}
+
+.save-button {
+  background-color: #dbf9ac;
+  border: none;
+  border-radius: 30px;
+  padding: 13px 50px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  margin: 0px auto;
+}
+
+/* --------- DELETE MODE --------------------------------- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: white;
+  width: 90%;
+  max-width: 580px;
+  border-radius: 50px;
+  text-align: center;
+  padding: 20px 30px;
+}
+
+.modal-header {
+  background-color: #f9acac;
+  padding: 26px;
+  font-weight: 800;
+  font-size: 25px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  margin: -20px -30px 10px -30px;
+}
+
+.modal-content p {
+  font-size: 17px;
+  font-weight: 800;
+  text-align: left;
+  padding: 0px 50px;
+}
+
+.delete-input {
+  margin: 0px auto;
+  margin-bottom: 18px;
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border: 3px solid #ccc;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: 700;
+}
+.delete-input::placeholder {
+  color: #d8d8d8;
+}
+.delete-input:focus {
+  outline: none;
+  border: 3px solid #b0b0b0;
+}
+
+.del-btn {
+  padding: 10px 30px;
+  border-radius: 40px;
+  font-weight: 800;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border: none;
+}
+
+.submit-delete-button {
+  background-color: #f9acac;
+  padding: 15px 33px;
+}
+
+.cancel-btn {
+  background-color: #fff;
+  border: 5px solid #dbf9ac;
+}
