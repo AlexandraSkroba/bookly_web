@@ -8,7 +8,7 @@ export const Layout = ({ children }) => {
 
   useEffect(() => {
     fetchAuthStatus().then((user) => {
-      if (user) setUsername(user.email);
+      if (user) setUsername(user.username);
     });
   }, []);
 
