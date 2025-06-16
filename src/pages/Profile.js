@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../pages/Profile.css";
 import { Layout } from "../components/Layout";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const genreOptions = [
   "Фэнтези",
@@ -15,42 +16,101 @@ const genreOptions = [
 
 function Profile() {
   const [editMode, setEditMode] = useState(false);
-  const [name] = useState("AALEXANDRA");
-  const [city] = useState("Minsk");
-  const [genres] = useState(["Фэнтези", "Детектив"]);
   const [newGenre, setNewGenre] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [shake, setShake] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const [user, setUser] = useState({
-    name: "AALEXANDRA",
-    city: "Minsk",
-    genres: ["Фэнтези", "Детектив"],
-    avatar: "/avatars/ava1.jpg",
-  });
+  const { logout } = useAuth();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:3001/user/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUser(res.data.user);
+      } catch (err) {
+        console.error("Failed to fetch profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const toggleGenre = (genre) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      genres: prevUser.genres.includes(genre)
-        ? prevUser.genres.filter((g) => g !== genre)
-        : [...prevUser.genres, genre],
+    setUser((prev) => ({
+      ...prev,
+      genres: prev.genres.includes(genre)
+        ? prev.genres.filter((g) => g !== genre)
+        : [...prev.genres, genre],
     }));
   };
 
-  const handleDelete = () => {
+  const handleSave = async () => {
+    if (!user.username?.trim()) {
+      alert("Name is required.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+
+      formData.append("username", user.username.trim());
+      formData.append("city", user.city || "");
+      formData.append("genres", JSON.stringify(user.genres || []));
+
+      // Добавить аватар, если он — файл:
+      if (user.avatar instanceof File) {
+        formData.append("avatar", user.avatar);
+      }
+
+      await axios.put("http://localhost:3001/user/profile", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setEditMode(false);
+      window.location.reload();
+    } catch (err) {
+      console.error("Failed to save profile:", err);
+    }
+  };
+
+  const handleDelete = async () => {
     if (confirmText === "DELETE ACCOUNT") {
-      alert("Account deleted.");
-      // отправь запрос на удаление здесь
-      setShowDeleteModal(false);
+      try {
+        const token = localStorage.getItem("token");
+
+        await axios.delete("http://localhost:3001/user/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        localStorage.removeItem("token");
+        logout();
+      } catch (error) {
+        console.error("Failed to delete account:", error);
+        alert("Something went wrong while deleting account.");
+      }
     } else {
       setShake(true);
       setTimeout(() => setShake(false), 500);
     }
   };
 
-  const { logout } = useAuth();
+  if (!user)
+    return (
+      <Layout>
+        <div className="loading">Loading...</div>
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -60,7 +120,11 @@ function Profile() {
             className={`avatar-wrapper ${editMode ? "editable-avatar" : ""}`}
           >
             <label className="avatar-label">
-              <img src={user.avatar} alt="Avatar" className="avatar-img" />
+              <img
+                src={user.avatar || "avatars/ava1.jpg"}
+                alt="Avatar"
+                className="avatar-img"
+              />
               {editMode && <span className="change-text">CHANGE</span>}
               {editMode && (
                 <input
@@ -69,11 +133,10 @@ function Profile() {
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        setUser((prev) => ({ ...prev, avatar: reader.result }));
-                      };
-                      reader.readAsDataURL(file);
+                      setUser((prev) => ({
+                        ...prev,
+                        avatar: file,
+                      }));
                     }
                   }}
                   style={{ display: "none" }}
@@ -86,14 +149,16 @@ function Profile() {
             <>
               <input
                 className="edit-name"
-                value={user.name}
+                value={user.username || ""}
+                placeholder="Enter your name"
                 onChange={(e) =>
-                  setUser((prev) => ({ ...prev, name: e.target.value }))
+                  setUser((prev) => ({ ...prev, username: e.target.value }))
                 }
               />
               <input
                 className="edit-city"
-                value={user.city}
+                value={user.city || ""}
+                placeholder="Enter your city"
                 onChange={(e) =>
                   setUser((prev) => ({ ...prev, city: e.target.value }))
                 }
@@ -101,23 +166,28 @@ function Profile() {
             </>
           ) : (
             <>
-              <h2 className="username">{name}</h2>
-              <p className="profile-city">{city}</p>
+              <h2 className="username">{user.username}</h2>
+              <p className="profile-city">
+                {user.city || "City not specified"}
+              </p>
             </>
           )}
 
           <div className="section">
             <strong>Genres</strong>
-
             {editMode ? (
               <div className="genre-edit-container">
                 <div className="selected-genres">
-                  {genres.map((g) => (
-                    <span key={g} className="genre-tag">
-                      {g}
-                      <button onClick={() => toggleGenre(g)}>×</button>
-                    </span>
-                  ))}
+                  {Array.isArray(user.genres) && user.genres.length > 0 ? (
+                    user.genres.map((g) => (
+                      <span key={g} className="genre-tag">
+                        {g}
+                        <button onClick={() => toggleGenre(g)}>×</button>
+                      </span>
+                    ))
+                  ) : (
+                    <p>No genres selected</p>
+                  )}
                 </div>
                 <div className="genre-list">
                   {genreOptions.map((g) => (
@@ -144,7 +214,11 @@ function Profile() {
                 </div>
               </div>
             ) : (
-              <p>{user.genres.join(", ")}</p>
+              <p>
+                {Array.isArray(user.genres)
+                  ? user.genres.join(", ")
+                  : "No genres selected"}
+              </p>
             )}
           </div>
 
@@ -164,10 +238,7 @@ function Profile() {
 
           <div className="button-row">
             {editMode ? (
-              <button
-                className="save-button"
-                onClick={() => setEditMode(false)}
-              >
+              <button className="save-button" onClick={handleSave}>
                 SAVE
               </button>
             ) : (
