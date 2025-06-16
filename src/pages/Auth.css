@@ -1,215 +1,223 @@
 body {
-    background-color: #FAFAFA;
-    font-family: "Plus Jakarta Sans", sans-serif;
+  background-color: #fafafa;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .headline {
-    margin-top: 50px;
-    font-size: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s ease-in-out;
+  margin-top: 50px;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s ease-in-out;
 }
 .headline:hover {
-    cursor: pointer;
-    color: #515151;
+  cursor: pointer;
+  color: #515151;
 }
 
 .container-signup {
-    background-color: white;
-    width: 350px;
-    margin: 50px auto;
-    border-radius: 26px;
-    padding: 40px 30px;
-    border: #D6D6D6 solid 1px;
-    text-align: center;
+  background-color: white;
+  width: 350px;
+  margin: 50px auto;
+  border-radius: 26px;
+  padding: 40px 30px;
+  border: #d6d6d6 solid 1px;
+  text-align: center;
 }
 
 .title {
-    margin: 0px;
-    margin: 0px;
-    font-size: 30px;
-    font-weight: 600;
+  margin: 0px;
+  margin: 0px;
+  font-size: 30px;
+  font-weight: 600;
 }
 
 .p-start {
-    margin-top: 5px;
-    padding: 0px;
-    font-size: 17px;
+  margin-top: 5px;
+  padding: 0px;
+  font-size: 17px;
 }
 
 .input-field {
-    height: 30px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 20px;
-    border-radius: 10px;
-    border: #EAEAEA solid 1px;
-    margin: 7px 0px;
-    font-family: "Plus Jakarta Sans", sans-serif;
+  height: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  border: #eaeaea solid 1px;
+  margin: 7px 0px;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 .input-field::placeholder {
-    color: #B0A9A9;
-    opacity: 1;
+  color: #b0a9a9;
+  opacity: 1;
 }
 .input-field:focus {
-    border-color: #EAEAEA;
-    outline: none;
-    box-shadow: 0px 1px 15px rgba(126, 126, 126, 0.3);
-    transition: 0.3s ease-in-out;
+  border-color: #eaeaea;
+  outline: none;
+  box-shadow: 0px 1px 15px rgba(126, 126, 126, 0.3);
+  transition: 0.3s ease-in-out;
 }
 
 .btn {
-    height: 44px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 10px;
-    border: none;
-    margin: 7px 0px;
-    font-family: "Plus Jakarta Sans", sans-serif;
+  height: 44px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: none;
+  margin: 7px 0px;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .btn-continue {
-    background-color: #dbf9ac;
-    transition: 0.5s ease-in-out;
+  background-color: #dbf9ac;
+  transition: 0.5s ease-in-out;
 }
 .btn-continue:hover {
-    cursor: pointer;
-    background-color: #d4f59f;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-color: #d4f59f;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-google {
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    gap: 7px;
-    background-color: white;
-    border: #EAEAEA solid 1px;
-    transition: 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background-color: white;
+  border: #eaeaea solid 1px;
+  transition: 0.3s ease-in-out;
 }
 .btn-google:hover {
-    cursor: pointer;
-    background-color: #EAEAEA;
+  cursor: pointer;
+  background-color: #eaeaea;
 }
 .btn-icon {
-    width: 23px;
-    text-align: right;
+  width: 23px;
+  text-align: right;
 }
 
 .p-login {
-    font-size: 13px;
-    text-align: center;
-    margin: 15px 0px 0px 0px;
-    padding: 0px;
-    text-decoration: none;
-    color: black;
+  font-size: 13px;
+  text-align: center;
+  margin: 15px 0px 0px 0px;
+  padding: 0px;
+  text-decoration: none;
+  color: black;
 }
 .p-login a {
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
 }
 .p-login a:hover {
-    color: #5d9b01;
+  color: #5d9b01;
 }
 
 .error-text {
-    font-size: 12px;
-    color: #ff5f5d;
-    font-weight: 600;
+  font-size: 12px;
+  color: #ff5f5d;
+  font-weight: 600;
 }
 
 .p-forgot {
-    font-size: 12px;
-    text-align: left;
-    margin-top: 0px;
-    transition: color 0.2s ease-in-out;
-    cursor: pointer;
-    padding-left: 20px;
-    width: 120px;
+  font-size: 12px;
+  text-align: left;
+  margin-top: 0px;
+  transition: color 0.2s ease-in-out;
+  cursor: pointer;
+  padding-left: 20px;
+  width: 120px;
 }
 .p-forgot:hover {
-    color: #5d9b01;
+  color: #5d9b01;
 }
 
 @media screen and (max-width: 768px) {
-    .h1-bookly {
-        margin-top: 50px;
-        font-size: 40px;
-    }
+  .h1-bookly {
+    margin-top: 50px;
+    font-size: 40px;
+  }
 
-    .container-signup {
-        width: 70%;
-        padding: 30px 20px;
-    }
+  .container-signup {
+    width: 70%;
+    padding: 30px 20px;
+  }
 
-    .h2-signup {
-        font-size: 25px;
-    }
+  .h2-signup {
+    font-size: 25px;
+  }
 
-    .p-start {
-        font-size: 15px;
-    }
+  .p-start {
+    font-size: 15px;
+  }
 
-    .input-signup {
-        height: 40px;
-        padding: 15px;
-    }
+  .input-signup {
+    height: 40px;
+    padding: 15px;
+  }
 
-    .btn {
-        height: 40px;
-    }
+  .btn {
+    height: 40px;
+  }
 
-    .btn-google {
-        gap: 5px;
-    }
+  .btn-google {
+    gap: 5px;
+  }
 
-    .btn-icon {
-        width: 20px;
-    }
+  .btn-icon {
+    width: 20px;
+  }
 
-    .p-login {
-        font-size: 12px;
-    }
+  .p-login {
+    font-size: 12px;
+  }
 }
 
 @media screen and (max-width: 480px) {
-    .h1-bookly {
-        font-size: 35px;
-    }
+  .h1-bookly {
+    font-size: 35px;
+  }
 
-    .container-signup {
-        padding: 20px 15px;
-        border-radius: 20px;
-    }
+  .container-signup {
+    padding: 20px 15px;
+    border-radius: 20px;
+  }
 
-    .h2-signup {
-        font-size: 22px;
-    }
+  .h2-signup {
+    font-size: 22px;
+  }
 
-    .p-start {
-        font-size: 14px;
-    }
+  .p-start {
+    font-size: 14px;
+  }
 
-    .input-signup {
-        height: 40px;
-        padding: 12px;
-    }
+  .input-signup {
+    height: 40px;
+    padding: 12px;
+  }
 
-    .btn {
-        height: 38px;
-    }
+  .btn {
+    height: 38px;
+  }
 
-    .btn-google {
-        gap: 3px;
-    }
+  .btn-google {
+    gap: 3px;
+  }
 
-    .btn-icon {
-        width: 18px;
-    }
+  .btn-icon {
+    width: 18px;
+  }
 
-    .p-login {
-        font-size: 11px;
-    }
+  .p-login {
+    font-size: 11px;
+  }
+}
+
+.profile-avatar-header {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
 }

@@ -4,11 +4,11 @@ import { fetchAuthStatus } from "../utils/auth";
 
 export const Layout = ({ children }) => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     fetchAuthStatus().then((user) => {
-      if (user) setUsername(user.username);
+      if (user) setUserData(user);
     });
   }, []);
 
@@ -22,7 +22,7 @@ export const Layout = ({ children }) => {
   };
 
   const handleProfileClick = () => {
-    if (username) {
+    if (userData.username) {
       navigate("/profile");
     } else {
       navigate("/signup");
@@ -50,8 +50,16 @@ export const Layout = ({ children }) => {
           </a>
         </nav>
         <div className="profile-button" onClick={handleProfileClick}>
-          <span className="profile-icon"></span>
-          {username ? username.toUpperCase() : "LogIn / SignUp"}
+          {userData?.avatar ? (
+            <img
+              src={`http://localhost:3001${userData.avatar}?${Date.now()}`}
+              alt="avatar"
+              className="profile-avatar-header"
+            />
+          ) : (
+            <span className="profile-icon"></span>
+          )}
+          {userData ? userData.username.toUpperCase() : "LogIn / SignUp"}
         </div>
       </header>
 

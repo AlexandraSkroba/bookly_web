@@ -29,8 +29,16 @@ export class AuthForm extends Component {
       const response = await axios.post(apiEndpoint, { email, password });
       this.setState({ success: response.data.message, errors: [] });
 
-      if (mode === "signup") {
-        navigate("/confirm-email", { state: { email } });
+      if (
+        mode === "signup" &&
+        response.data?.access_token ===
+          "Please check your email to confirm your account"
+      ) {
+        this.setState({
+          success:
+            "Registration successful! Please check your email to confirm your account.",
+        });
+        return;
       }
 
       if (mode === "login") {
@@ -68,6 +76,9 @@ export class AuthForm extends Component {
 
     return (
       <AuthFormLayout title={title} bottomText={bottomText}>
+        {this.state.success && (
+          <div className="success-message">{this.state.success}</div>
+        )}
         <form onSubmit={this.handleSubmit}>
           <AuthInput
             type="text"

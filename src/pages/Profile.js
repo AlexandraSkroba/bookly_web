@@ -21,6 +21,7 @@ function Profile() {
   const [confirmText, setConfirmText] = useState("");
   const [shake, setShake] = useState(false);
   const [user, setUser] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
 
   const { logout } = useAuth();
 
@@ -39,6 +40,12 @@ function Profile() {
 
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    };
+  }, [avatarPreview]);
 
   const toggleGenre = (genre) => {
     setUser((prev) => ({
@@ -68,15 +75,19 @@ function Profile() {
         formData.append("avatar", user.avatar);
       }
 
-      await axios.put("http://localhost:3001/user/profile", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.put(
+        "http://localhost:3001/user/profile",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
+      setUser(res.data.user);
       setEditMode(false);
-      window.location.reload();
     } catch (err) {
       console.error("Failed to save profile:", err);
     }
@@ -121,7 +132,12 @@ function Profile() {
           >
             <label className="avatar-label">
               <img
-                src={user.avatar || "avatars/ava1.jpg"}
+                src={
+                  avatarPreview ||
+                  (typeof user.avatar === "string"
+                    ? `http://localhost:3001${user.avatar}`
+                    : "avatars/ava1.jpg")
+                }
                 alt="Avatar"
                 className="avatar-img"
               />
@@ -137,6 +153,7 @@ function Profile() {
                         ...prev,
                         avatar: file,
                       }));
+                      setAvatarPreview(URL.createObjectURL(file));
                     }
                   }}
                   style={{ display: "none" }}
