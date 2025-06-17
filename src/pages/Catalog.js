@@ -4,6 +4,16 @@ import { Layout } from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+const genreList = [
+  "Фэнтези",
+  "Детектив",
+  "Триллер",
+  "Комедия",
+  "Романтика",
+  "Драма",
+  "Классика",
+];
+
 const books = [
   {
     cover: "covers/1.png",
@@ -77,18 +87,64 @@ function Catalog() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const filteredBooks = books.filter((book) => {
+    const matchesQuery =
+      book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesGenre =
+      selectedGenres.length === 0 || selectedGenres.includes(book.genre);
+
+    return matchesQuery && matchesGenre;
+  });
 
   return (
     <Layout>
       <div className="catalog-container">
         <div className="book-section">
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by title or author..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          <div className="search-filter-bar">
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search by title or author..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="genre-filter-dropdown">
+              <div
+                className="dropdown-toggle"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                Filter by genre ▾
+              </div>
+              {dropdownOpen && (
+                <div className="dropdown-menu">
+                  {genreList.map((genre) => (
+                    <label key={genre} className="dropdown-item">
+                      <input
+                        type="checkbox"
+                        value={genre}
+                        checked={selectedGenres.includes(genre)}
+                        onChange={(e) => {
+                          const { checked, value } = e.target;
+                          setSelectedGenres((prev) =>
+                            checked
+                              ? [...prev, value]
+                              : prev.filter((g) => g !== value)
+                          );
+                        }}
+                      />
+                      {genre}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <table className="book-table">
