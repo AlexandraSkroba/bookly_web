@@ -5,28 +5,32 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 const allBooks = [
   {
-    cover: "covers/1.png",
+    cover: "covers/clean.jpg",
     title: "Чистая архитектура",
     author: "Роберт Мартин",
-    ownerId: 1,
+    description:
+      "Роберт Мартин дает прямые и лаконичные ответы на ключевые вопросы архитектуры и дизайна. «Чистую архитектуру» обязаны прочитать разработчики всех уровней, системные аналитики, архитекторы и каждый программист, который желает подняться по карьерной лестнице или хотя бы повлиять на людей, которые занимаются данной работой. Все архитектуры подчиняются одним и тем же правилам! ",
+    genre: ["Программирование"],
+    fromOwner: "",
+    ownerId: 2,
   },
   {
-    cover: "covers/2.png",
-    title: "Мартин Иден",
-    author: "Джек Лондон",
+    cover: "covers/kniznyvor.webp",
+    title: "Книжный вор",
+    author: "Маркус Зусак",
     ownerId: 1,
   },
   {
     cover: "covers/3.png",
     title: "Generation «П»",
     author: "Виктор Пелевин",
-    ownerId: 2,
+    ownerId: 3,
   },
   {
     cover: "covers/4.png",
     title: "Финансист",
     author: "Теодор Драйзер",
-    ownerId: 3,
+    ownerId: 2,
   },
   {
     cover: "covers/2.png",
@@ -50,7 +54,7 @@ const allBooks = [
 
 const userNames = {
   1: "GogaBurak",
-  2: "MimiMumu",
+  2: "GogaBurak",
   3: "Anna ChikiPiki",
 };
 

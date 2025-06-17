@@ -4,23 +4,50 @@ import "../pages/Chats.css";
 import { useNavigate } from "react-router-dom";
 
 const users = [
-  { id: 1, name: "GogaBurak", city: "Minsk" },
-  { id: 2, name: "MimiMumu", city: "Vilnius" },
-  { id: 3, name: "Anna ChikiPiki", city: "Warsaw" },
+  {
+    id: 1,
+    name: "GogaBurak",
+    city: "Minsk",
+    avatar: "avatars/ava3.jpg",
+  },
+  {
+    id: 2,
+    name: "MimiMumu",
+    city: "Minsk",
+    avatar: "avatars/ava2.jpg",
+  },
+  {
+    id: 3,
+    name: "Anna ChikiPiki",
+    city: "Warsaw",
+    avatar: "avatars/ava3.jpg",
+  },
 ];
 
 const messagesMock = {
   2: [
     {
       from: "them",
-      text: "Привет! Интересует книга «Гордость и предубеждение». Можно обсудить обмен?",
+      text: "Привет! Интересует книга «The Great Gatsby». Можно обсудить обмен?",
     },
     { from: "me", text: "Привет. Окей, кидай адрес, я отправлю" },
   ],
   1: [
     {
       from: "me",
-      text: "Привет! Интересует книга «Гордость и предубеждение». Можно обсудить обмен?",
+      text: "Привет! Интересует книга «Чистая архитектура». Можно обсудить обмен?",
+    },
+    {
+      from: "them",
+      text: "Привет! Да, давай. Кинь адрес я отправлю",
+    },
+    {
+      from: "me",
+      text: "ул. Гикало 9, Минск, 220005",
+    },
+    {
+      from: "them",
+      text: "Отправил, жди. Трек LP007307038345862",
     },
   ],
   3: [
@@ -40,8 +67,17 @@ function Chats() {
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
+  const [deliveryConfirmedMap, setDeliveryConfirmedMap] = useState({});
+
+  const [showReviewInput, setShowReviewInput] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const [hasLeftReviewMap, setHasLeftReviewMap] = useState({});
+
   const [exchangeAcceptedMap, setExchangeAcceptedMap] = useState({
-    1: false,
+    1: true,
     2: false,
     3: false,
   });
@@ -50,6 +86,13 @@ function Chats() {
   const exchangeAccepted = exchangeAcceptedMap[selectedUserId];
 
   const selectedUser = users.find((u) => u.id === selectedUserId);
+
+  const handleConfirmDelivery = () => {
+    setDeliveryConfirmedMap((prev) => ({
+      ...prev,
+      [selectedUserId]: true,
+    }));
+  };
 
   const handleSend = () => {
     if (!messageInput.trim() || !exchangeAccepted) return;
@@ -87,6 +130,9 @@ function Chats() {
     }
   }, [messages, selectedUserId]);
 
+  const isMeInitiator =
+    selectedMessages.length > 0 && selectedMessages[0].from === "me";
+
   return (
     <Layout>
       <div className="chat-page">
@@ -105,6 +151,22 @@ function Chats() {
         </div>
 
         <div className="chat-window">
+          {exchangeAccepted === true &&
+            isMeInitiator &&
+            !deliveryConfirmedMap[selectedUserId] && (
+              <div className="chat-confirm-banner">
+                <p>
+                  Confirm you’ve received the book from {selectedUser.name}.
+                </p>
+                <button
+                  className="confirm-button"
+                  onClick={handleConfirmDelivery}
+                >
+                  Confirm delivery
+                </button>
+              </div>
+            )}
+
           {exchangeAccepted === false &&
             selectedMessages.length > 0 &&
             selectedMessages[0].from !== "me" && (
@@ -147,7 +209,23 @@ function Chats() {
                     }`}
                   >
                     <div className="chat-avatar-container">
-                      <img src="/logo512.png" className="chat-avatar-img" />
+                      <img
+                        src={
+                          msg.from === "me"
+                            ? "avatars/ava1.jpg"
+                            : selectedUser.avatar
+                        }
+                        className="chat-avatar-img"
+                        onClick={() => {
+                          if (msg.from !== "me") {
+                            navigate(`/profile/${selectedUserId}`);
+                          } else {
+                            navigate(`/my-profile`);
+                          }
+                        }}
+                        style={{ cursor: "pointer" }}
+                      />
+
                       <span className="chat-avatar">
                         {msg.from === "me"
                           ? "aalexandra"
@@ -179,6 +257,53 @@ function Chats() {
                 </button>
               </div>
             </>
+          )}
+          {deliveryConfirmedMap[selectedUserId] &&
+            isMeInitiator &&
+            !hasLeftReviewMap[selectedUserId] && (
+              <div className="chat-confirmed-message">
+                Delivery confirmed. You can now leave a review!
+                {!showReviewInput ? (
+                  <button
+                    className="review-button"
+                    onClick={() => setShowReviewInput(true)}
+                  >
+                    Leave a review
+                  </button>
+                ) : (
+                  <div className="review-section">
+                    <input
+                      className="review-textarea"
+                      placeholder="Write your review..."
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                    />
+                    <button
+                      className="submit-review-button"
+                      onClick={() => {
+                        if (reviewText.trim()) {
+                          setShowReviewInput(false);
+                          setReviewText("");
+                          setHasLeftReviewMap((prev) => ({
+                            ...prev,
+                            [selectedUserId]: true,
+                          }));
+                          setShowSuccessMessage(true);
+                          setTimeout(() => setShowSuccessMessage(false), 3000);
+                        }
+                      }}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+          {showSuccessMessage && (
+            <div className="review-success-toast">
+              Thank you! Your review has been submitted.
+            </div>
           )}
 
           {exchangeAccepted === "rejected" && (

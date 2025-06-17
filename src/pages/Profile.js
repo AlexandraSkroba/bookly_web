@@ -14,6 +14,24 @@ const genreOptions = [
   "Классика",
 ];
 
+const mockedReviews = [
+  {
+    from: "MimiMumu",
+    avatar: "/avatars/ava2.jpg",
+    text: "Очень приятный обмен! Книга была как новая.",
+  },
+  {
+    from: "EricCartman",
+    avatar: "/avatars/eric.jpg",
+    text: "Немного задержалась с отправкой, но всё хорошо.",
+  },
+  {
+    from: "WendyTestaburger",
+    avatar: "/avatars/ava8.jpg",
+    text: "Быстро и без проблем. Спасибо!",
+  },
+];
+
 function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [newGenre, setNewGenre] = useState("");
@@ -24,6 +42,9 @@ function Profile() {
   const [avatarPreview, setAvatarPreview] = useState(null);
 
   const { logout } = useAuth();
+
+  const [trackNumber, setTrackNumber] = useState("");
+  const [trackStatus, setTrackStatus] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -251,9 +272,41 @@ function Profile() {
                 className="track-input"
                 type="text"
                 placeholder="Enter track number..."
+                value={trackNumber}
+                onChange={(e) => setTrackNumber(e.target.value)}
               />
               <br />
-              <button className="search-button">Search</button>
+              <button
+                className="search-button"
+                onClick={() => {
+                  setTrackStatus("Загрузка…");
+
+                  setTimeout(() => {
+                    if (trackNumber === "LP007307038345862") {
+                      setTrackStatus("Посылка в пути");
+                    } else {
+                      setTrackStatus("Информация не найдена");
+                    }
+
+                    // Очистить сообщение через 4 секунды
+                    setTimeout(() => setTrackStatus(""), 4000);
+                  }, 1200); // задержка имитации API
+                }}
+              >
+                Search
+              </button>
+
+              {trackStatus && (
+                <p
+                  style={{
+                    marginTop: "10px",
+                    // color: "#f9acac",
+                    marginBottom: "-20px",
+                  }}
+                >
+                  {trackStatus}
+                </p>
+              )}
             </div>
           )}
 
@@ -283,6 +336,27 @@ function Profile() {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="reviews-card">
+        <strong className="str-rew">Reviews</strong>
+        {mockedReviews.length === 0 ? (
+          <p>No reviews yet.</p>
+        ) : (
+          mockedReviews.map((review, index) => (
+            <div key={index} className="review-item">
+              <img
+                src={review.avatar}
+                alt={`${review.from}'s avatar`}
+                className="review-avatar"
+              />
+              <div className="review-content">
+                <span className="review-author">{review.from}</span>
+                <p className="review-text">{review.text}</p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       {showDeleteModal && (

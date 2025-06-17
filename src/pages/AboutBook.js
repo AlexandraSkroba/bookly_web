@@ -6,14 +6,13 @@ import { useLocation } from "react-router-dom";
 
 function AboutBook() {
   const book = {
-    cover: "/covers/8.png",
-    title: "Гордость и предубеждение",
-    author: "Джейн Остен",
+    cover: "/covers/clean.jpg",
+    title: "Чистая архитектура",
+    author: "Роберт Мартин",
     description:
-      "Классический роман Джейн Остин о любви и предрассудках. Элизабет Беннет и мистер Дарси проходят путь от взаимного непонимания к глубокому чувству, преодолевая гордость и предубеждения. История полна остроумия, романтики и социальной сатиры.",
-    genre: ["Классика", "Роман"],
-    fromOwner:
-      "Книга в отличном состоянии. Для тех кто любит сопли и романтику",
+      "Роберт Мартин дает прямые и лаконичные ответы на ключевые вопросы архитектуры и дизайна. «Чистую архитектуру» обязаны прочитать разработчики всех уровней, системные аналитики, архитекторы и каждый программист, который желает подняться по карьерной лестнице или хотя бы повлиять на людей, которые занимаются данной работой. Все архитектуры подчиняются одним и тем же правилам! ",
+    genre: ["Программирование"],
+    fromOwner: "",
     ownerId: 1,
   };
 
@@ -21,7 +20,7 @@ function AboutBook() {
     username: "GogaBurak",
   };
 
-  const currentUserId = 1;
+  const currentUserId = 2;
   const isMyBook = book.ownerId === currentUserId;
 
   const location = useLocation();
@@ -35,6 +34,8 @@ function AboutBook() {
   const [fromOwner, setFromOwner] = useState(book.fromOwner);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [showRequestNotification, setShowRequestNotification] = useState(false);
 
   return (
     <Layout>
@@ -144,11 +145,23 @@ function AboutBook() {
                     </button>
                   </div>
                 ) : (
-                  <button className="request-button">REQUEST EXCHANGE</button>
+                  <button
+                    className="request-button"
+                    onClick={() => {
+                      setShowRequestNotification(true);
+                      setTimeout(() => setShowRequestNotification(false), 3000); // 3 сек
+                    }}
+                  >
+                    REQUEST EXCHANGE
+                  </button>
                 )}
               </>
             )}
           </div>
+          {showRequestNotification && (
+            <div className="notification-banner">Exchange request sent!</div>
+          )}
+
           {showDeleteModal && (
             <div className="book-modal-overlay">
               <div className="book-modal-content">

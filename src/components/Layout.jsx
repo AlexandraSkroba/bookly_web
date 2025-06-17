@@ -6,6 +6,8 @@ export const Layout = ({ children }) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
 
+  const [hasUnreadMessages, setHasUnreadMessages] = useState(true);
+
   useEffect(() => {
     fetchAuthStatus().then((user) => {
       if (user) setUserData(user);
@@ -41,10 +43,15 @@ export const Layout = ({ children }) => {
             className="nav-item"
           >
             MY BOOKS
+            {/* USERS */}
           </a>
-          <a onClick={() => protectedNavigate("/chats")} className="nav-item">
-            CHATS
-          </a>
+          <div
+            className="nav-item-wrapper"
+            onClick={() => protectedNavigate("/chats")}
+          >
+            <a className="nav-item">CHATS</a>
+            {/* {hasUnreadMessages && <span className="chat-notification-dot" />} */}
+          </div>
           <a onClick={() => protectedNavigate("/catalog")} className="nav-item">
             CATALOG
           </a>

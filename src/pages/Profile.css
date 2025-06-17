@@ -1,7 +1,7 @@
 .profile-container {
+  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* центрируем карточку профиля */
   padding: 40px 20px;
   font-family: "Plus Jakarta Sans", sans-serif;
 }
@@ -392,4 +392,248 @@
 
 .modal-content.shake {
   animation: shake 0.5s;
+}
+
+/* отзывы */
+.reviews-section {
+  margin-top: 30px;
+  max-height: 250px; /* или любое значение по вкусу */
+  overflow-y: auto;
+  padding-right: 8px;
+  /* border-top: 1px solid #ddd; */
+  margin-bottom: 20px;
+}
+
+.reviews-section::-webkit-scrollbar {
+  width: 6px;
+}
+.reviews-section::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 6px;
+}
+.reviews-section::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+.review-item {
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.review-content {
+  padding-left: 10px;
+  text-align: left;
+  flex: 1;
+}
+
+.review-author {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.review-text {
+  margin: 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.report-icon {
+  position: absolute;
+  top: 70px;
+  right: 760px;
+  background-image: url("F:/NodeJS/bookly_web/public/report.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.report-icon:hover {
+  opacity: 1;
+}
+
+.books-icon {
+  position: absolute;
+  top: 70px;
+  left: 760px;
+  background-image: url("F:/NodeJS/bookly_web/public/mybooks (2).png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.books-icon:hover {
+  opacity: 1;
+}
+
+.report-reasons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 50px;
+  font-weight: 600;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 16px;
+}
+
+.report-option {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.submit-report-button {
+  background-color: #f9acac;
+  padding: 15px 33px;
+  transition: 0.5s ease-in-out;
+  /* padding: 10px 30px; */
+  border-radius: 40px;
+  font-weight: 800;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border: none;
+}
+
+.select-p {
+  margin-bottom: 0px;
+  margin-top: 30px;
+}
+
+.profile-content {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* .reviews-card {
+  background-color: white;
+  border-radius: 30px;
+  padding: 25px;
+  width: 320px;
+  max-height: 550px;
+  overflow-y: auto;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+}
+
+.reviews-card .str-rew {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.reviews-card .review-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.reviews-card .review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reviews-card .review-author {
+  font-weight: 600;
+}
+
+.reviews-card .review-text {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #444;
+}
+ */
+
+.profile-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.reviews-card {
+  position: absolute;
+  right: 340px;
+  top: 40px;
+  background-color: white;
+  border-radius: 30px;
+  padding: 25px;
+  width: 320px;
+  max-height: 550px;
+  overflow-y: auto;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.reviews-card .str-rew {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.reviews-card .review-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.reviews-card .review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reviews-card .review-author {
+  font-weight: 600;
+}
+
+.reviews-card .review-text {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #444;
 }

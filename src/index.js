@@ -14,6 +14,10 @@ import MyBooks from "./pages/MyBooks";
 import Chats from "./pages/Chats";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
+import UserProfile from "./pages/UserProfile";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminChats from "./pages/admin/AdminChats";
+import AdminUserProfile from "./pages/admin/AdminUserProfile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -52,6 +56,10 @@ root.render(
             }
           />
           <Route path="/user-books/:userId" element={<MyBooks />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/chats" element={<AdminChats />} />
+          <Route path="/admin/user/:id" element={<AdminUserProfile />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

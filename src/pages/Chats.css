@@ -210,3 +210,145 @@
 .chat-messages::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.chat-confirm-banner {
+  background-color: #ffffc7;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.confirm-button {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 20px;
+  background-color: #dbf9ac;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  transition: 0.5s ease-in-out;
+}
+
+.confirm-button:hover {
+  background-color: #e2ffb4;
+}
+
+.chat-confirmed-message {
+  text-align: center;
+  color: green;
+  margin: 10px;
+  font-weight: bold;
+}
+
+/* отзыв */
+.chat-confirmed-message {
+  margin: 20px 0;
+  padding: 18px 24px;
+  background-color: #dbf9ac;
+  border-radius: 16px;
+  font-size: 17px;
+  color: #000000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.chat-confirmed-message button.review-button {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  transition: 0.5s ease-in-out;
+  margin-left: 15px;
+}
+
+.chat-confirmed-message button.review-button:hover {
+  background-color: #f0ffd8;
+}
+
+.review-section {
+  margin-top: 15px;
+  display: flex;
+  /* flex-direction: column; */
+  gap: 10px;
+  justify-content: center;
+}
+
+.review-section input.review-textarea {
+  width: 50%;
+  border-radius: 20px;
+  border: 1.5px solid #ddd;
+  font-size: 14px;
+  resize: none;
+  text-align: left;
+  font-family: "Montserrat", sans-serif;
+  padding-left: 10px;
+}
+
+.review-section input.review-textarea:focus {
+  outline: none;
+  border: 1.5px solid #aeaeae;
+}
+
+.review-section button.submit-review-button {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  transition: 0.5s ease-in-out;
+  margin-left: 1px;
+}
+
+.review-section button.submit-review-button:hover {
+  background-color: #f0ffd8;
+}
+
+/* уведомление */
+.review-success-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #6ab04c;
+  color: white;
+  padding: 16px 28px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  animation: fadeInOutCenter 3s ease forwards;
+  text-align: center;
+}
+
+@keyframes fadeInOutCenter {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}

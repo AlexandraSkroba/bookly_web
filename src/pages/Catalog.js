@@ -14,6 +14,19 @@ const genreList = [
   "Классика",
 ];
 
+const aiRecommendations = [
+  {
+    cover: "covers/ai1.png",
+    title: "Чистый код",
+    author: "Роберт Мартин",
+  },
+  {
+    cover: "covers/ai2.png",
+    title: "Программист-прагматик",
+    author: "Эндрю Хант",
+  },
+];
+
 const books = [
   {
     cover: "covers/1.png",
@@ -80,6 +93,8 @@ const recommendations = [
   },
 ];
 
+const allBooks = [...books, ...recommendations];
+
 function Catalog() {
   const navigate = useNavigate();
   const handleBookClick = () => {
@@ -90,7 +105,48 @@ function Catalog() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const filteredBooks = books.filter((book) => {
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
+
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiResults, setAIResults] = useState([]);
+
+  const handleSearchSubmit = () => {
+    setSearchSubmitted(true);
+
+    if (!searchQuery) {
+      setAIResults([]);
+      return;
+    }
+
+    setIsLoadingAI(true);
+
+    setTimeout(() => {
+      const lowerQuery = searchQuery.toLowerCase();
+
+      const exactMatches = allBooks.filter(
+        (book) =>
+          book.title.toLowerCase() === lowerQuery ||
+          book.author.toLowerCase() === lowerQuery
+      );
+
+      const partialMatches = allBooks.filter(
+        (book) =>
+          !exactMatches.includes(book) &&
+          (book.title.toLowerCase().includes(lowerQuery) ||
+            book.author.toLowerCase().includes(lowerQuery))
+      );
+
+      const finalList =
+        exactMatches.length > 0 || partialMatches.length > 0
+          ? [...exactMatches, ...partialMatches]
+          : aiRecommendations;
+
+      setAIResults(finalList);
+      setIsLoadingAI(false);
+    }, 2000);
+  };
+
+  const filteredBooks = allBooks.filter((book) => {
     const matchesQuery =
       book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       book.author.toLowerCase().includes(searchQuery.toLowerCase());
@@ -100,6 +156,35 @@ function Catalog() {
 
     return matchesQuery && matchesGenre;
   });
+
+  const showAIRecommendations =
+    searchSubmitted && searchQuery && filteredBooks.length === 0;
+
+  const similarBooks = allBooks.filter((book) => {
+    return (
+      searchQuery &&
+      !filteredBooks.includes(book) &&
+      (book.title.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+        book.title
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase().split(" ")[0]))
+    );
+  });
+
+  const renderBookRow = (book, i) => (
+    <tr key={i}>
+      <td className="td-img">
+        <img
+          src={book.cover}
+          alt={book.title}
+          className="book-cover"
+          onClick={handleBookClick}
+        />
+      </td>
+      <td>{book.title}</td>
+      <td>{book.author}</td>
+    </tr>
+  );
 
   return (
     <Layout>
@@ -111,7 +196,14 @@ function Catalog() {
                 type="text"
                 placeholder="Search by title or author..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setSearchSubmitted(false); // сбрасываем при вводе
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearchSubmit();
+                }}
+                onBlur={handleSearchSubmit}
               />
             </div>
 
@@ -127,17 +219,17 @@ function Catalog() {
                   {genreList.map((genre) => (
                     <label key={genre} className="dropdown-item">
                       <input
-                        type="checkbox"
-                        value={genre}
-                        checked={selectedGenres.includes(genre)}
+                        type="text"
+                        placeholder="Search by title or author..."
+                        value={searchQuery}
                         onChange={(e) => {
-                          const { checked, value } = e.target;
-                          setSelectedGenres((prev) =>
-                            checked
-                              ? [...prev, value]
-                              : prev.filter((g) => g !== value)
-                          );
+                          setSearchQuery(e.target.value);
+                          setSearchSubmitted(false);
                         }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") handleSearchSubmit();
+                        }}
+                        onBlur={handleSearchSubmit}
                       />
                       {genre}
                     </label>
@@ -156,20 +248,31 @@ function Catalog() {
               </tr>
             </thead>
             <tbody>
-              {books.map((book, i) => (
-                <tr key={i}>
-                  <td className="td-img">
-                    <img
-                      src={book.cover}
-                      alt={book.title}
-                      className="book-cover"
-                      onClick={handleBookClick}
-                    />
-                  </td>
-                  <td>{book.title}</td>
-                  <td>{book.author}</td>
-                </tr>
-              ))}
+              {searchSubmitted ? (
+                isLoadingAI ? (
+                  <tr>
+                    <td
+                      colSpan="3"
+                      style={{ textAlign: "center", padding: "20px" }}
+                    >
+                      Пожалуйста, подождите...
+                    </td>
+                  </tr>
+                ) : aiResults.length > 0 ? (
+                  aiResults.map(renderBookRow)
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="3"
+                      style={{ textAlign: "center", padding: "20px" }}
+                    >
+                      Ничего не найдено
+                    </td>
+                  </tr>
+                )
+              ) : (
+                allBooks.map(renderBookRow)
+              )}
               <tr className="line-extension-row">
                 <td></td>
                 <td></td>
