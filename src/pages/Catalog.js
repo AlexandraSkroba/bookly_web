@@ -93,13 +93,48 @@ const recommendations = [
   },
 ];
 
+const newRecommendations = [
+  {
+    cover: "covers/ai2.jpg",
+    title: "Программист-прагматик",
+    author: "Эндрю Хант",
+  },
+  {
+    cover: "covers/sicp.jpg",
+    title: "Структура и интерпретация компьютерных программ",
+    author: "Харольд Абельсон",
+  },
+  {
+    cover: "covers/6.png",
+    title: "Хроники Нарнии",
+    author: "Клайв Льюис",
+  },
+  {
+    cover: "covers/stalker.jpg",
+    title: "Пикник на обочине",
+    author: "Аркадий и Борис Стругацикие",
+  },
+  {
+    cover: "covers/solaris.jpg",
+    title: "Солярис",
+    author: "Станислав Лем",
+  },
+]
+
 const allBooks = [...books, ...recommendations];
 
 function Catalog() {
   const navigate = useNavigate();
   const handleBookClick = () => {
+    setNewRecommendations()
     navigate("/about-book");
   };
+
+  const setNewRecommendations = () => {
+    setTimeout(() => {
+      localStorage.setItem("recommendations", JSON.stringify(newRecommendations))
+    }, 3000)
+  }
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -284,7 +319,8 @@ function Catalog() {
 
         <div className="recommend-panel">
           <h3>RECOMMEND</h3>
-          {recommendations.map((rec, i) => (
+          {console.log(JSON.parse(localStorage.getItem("recommendations")))}
+          {(JSON.parse(localStorage.getItem("recommendations")) || recommendations).map((rec, i) => (
             <div className="recommend-item" key={i}>
               <img
                 src={rec.cover}
