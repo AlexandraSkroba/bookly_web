@@ -2,6 +2,7 @@ import "../App.css";
 import "../pages/Catalog.css";
 import { Layout } from "../components/Layout";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const books = [
   {
@@ -75,39 +76,52 @@ function Catalog() {
     navigate("/about-book");
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <Layout>
       <div className="catalog-container">
-        <table className="book-table">
-          <thead>
-            <tr>
-              <th>COVER</th>
-              <th>TITLE</th>
-              <th>AUTHOR</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((book, i) => (
-              <tr key={i}>
-                <td className="td-img">
-                  <img
-                    src={book.cover}
-                    alt={book.title}
-                    className="book-cover"
-                    onClick={handleBookClick}
-                  />
-                </td>
-                <td>{book.title}</td>
-                <td>{book.author}</td>
+        <div className="book-section">
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search by title or author..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <table className="book-table">
+            <thead>
+              <tr>
+                <th>COVER</th>
+                <th>TITLE</th>
+                <th>AUTHOR</th>
               </tr>
-            ))}
-            <tr className="line-extension-row">
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {books.map((book, i) => (
+                <tr key={i}>
+                  <td className="td-img">
+                    <img
+                      src={book.cover}
+                      alt={book.title}
+                      className="book-cover"
+                      onClick={handleBookClick}
+                    />
+                  </td>
+                  <td>{book.title}</td>
+                  <td>{book.author}</td>
+                </tr>
+              ))}
+              <tr className="line-extension-row">
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <div className="recommend-panel">
           <h3>RECOMMEND</h3>

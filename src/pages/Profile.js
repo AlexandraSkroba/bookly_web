@@ -48,12 +48,16 @@ function Profile() {
   }, [avatarPreview]);
 
   const toggleGenre = (genre) => {
-    setUser((prev) => ({
-      ...prev,
-      genres: prev.genres.includes(genre)
-        ? prev.genres.filter((g) => g !== genre)
-        : [...prev.genres, genre],
-    }));
+    setUser((prev) => {
+      const currentGenres = Array.isArray(prev.genres) ? prev.genres : [];
+
+      return {
+        ...prev,
+        genres: currentGenres.includes(genre)
+          ? currentGenres.filter((g) => g !== genre)
+          : [...currentGenres, genre],
+      };
+    });
   };
 
   const handleSave = async () => {
