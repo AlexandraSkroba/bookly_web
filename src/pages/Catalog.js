@@ -16,14 +16,29 @@ const genreList = [
 
 const aiRecommendations = [
   {
-    cover: "covers/ai1.png",
-    title: "Чистый код",
+    cover: "covers/clean.jpg",
+    title: "Чистая архитектура",
     author: "Роберт Мартин",
   },
   {
-    cover: "covers/ai2.png",
+    cover: "covers/ai2.jpg",
     title: "Программист-прагматик",
     author: "Эндрю Хант",
+  },
+  {
+    cover: "covers/sicp.jpg",
+    title: "Структура и интерпретация компьютерных программ",
+    author: "Харольд Абельсон",
+  },
+  {
+    cover: "covers/patterns.jpg",
+    title: "Паттерны проектирования",
+    author: "Эрик Фримен",
+  },
+  {
+    cover: "covers/kabanchik.jpg",
+    title: "Высоконагруженные приложения. Программирование, масштабирование, поддержка",
+    author: "Мартин Клеппман",
   },
 ];
 
@@ -121,6 +136,34 @@ const newRecommendations = [
   },
 ]
 
+const aiRecommendations2 = [
+  {
+    cover: "covers/idiot.jpg",
+    title: "Идиот",
+    author: "Фёдор Достоевский",
+  },
+  {
+    cover: "covers/brothers.jpg",
+    title: "Братья Карамазовы",
+    author: "Фёдор Достоевский",
+  },
+  {
+    cover: "covers/crime.jpg",
+    title: "Преступление и наказание",
+    author: "Фёдор Достоевский",
+  },
+  {
+    cover: "covers/oblomov.jpg",
+    title: "Обломов",
+    author: "Иван Гончаров",
+  },
+  {
+    cover: "covers/fathers.jpg",
+    title: "Отцы и дети",
+    author: "Иван Тургенев",
+  },
+];
+
 const allBooks = [...books, ...recommendations];
 
 function Catalog() {
@@ -140,46 +183,49 @@ function Catalog() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const [searchSubmitted, setSearchSubmitted] = useState(false);
-
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [aiResults, setAIResults] = useState([]);
 
   const handleSearchSubmit = () => {
-    setSearchSubmitted(true);
-
-    if (!searchQuery) {
+    if (!searchQuery.trim()) {
       setAIResults([]);
       return;
     }
 
-    setIsLoadingAI(true);
+    const lowerQuery = searchQuery.toLowerCase();
 
-    setTimeout(() => {
-      const lowerQuery = searchQuery.toLowerCase();
+    const exactMatches = allBooks.filter(
+      (book) =>
+        book.title.toLowerCase() === lowerQuery ||
+        book.author.toLowerCase() === lowerQuery
+    );
 
-      const exactMatches = allBooks.filter(
-        (book) =>
-          book.title.toLowerCase() === lowerQuery ||
-          book.author.toLowerCase() === lowerQuery
-      );
+    const partialMatches = allBooks.filter(
+      (book) =>
+        !exactMatches.includes(book) &&
+        (book.title.toLowerCase().includes(lowerQuery) ||
+          book.author.toLowerCase().includes(lowerQuery))
+    );
 
-      const partialMatches = allBooks.filter(
-        (book) =>
-          !exactMatches.includes(book) &&
-          (book.title.toLowerCase().includes(lowerQuery) ||
-            book.author.toLowerCase().includes(lowerQuery))
-      );
+    const hasMatches = [...exactMatches, ...partialMatches].length > 0;
 
-      const finalList =
-        exactMatches.length > 0 || partialMatches.length > 0
-          ? [...exactMatches, ...partialMatches]
-          : aiRecommendations;
-
-      setAIResults(finalList);
-      setIsLoadingAI(false);
-    }, 2000);
+    if (!hasMatches && (lowerQuery === 'грокаем')) {
+      setIsLoadingAI(true);
+      setTimeout(() => {
+        setAIResults(aiRecommendations);
+        setIsLoadingAI(false);
+      }, 2000);
+    } else if(!hasMatches && (lowerQuery === 'игрок')) {
+      setIsLoadingAI(true);
+      setTimeout(() => {
+        setAIResults(aiRecommendations2);
+        setIsLoadingAI(false);
+      }, 2000);
+    } else {
+      setAIResults([]);
+    }
   };
+
 
   const filteredBooks = allBooks.filter((book) => {
     const matchesQuery =
@@ -193,7 +239,7 @@ function Catalog() {
   });
 
   const showAIRecommendations =
-    searchSubmitted && searchQuery && filteredBooks.length === 0;
+    searchQuery && filteredBooks.length === 0;
 
   const similarBooks = allBooks.filter((book) => {
     return (
@@ -233,12 +279,15 @@ function Catalog() {
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
-                  setSearchSubmitted(false); // сбрасываем при вводе
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSearchSubmit();
+                  if (e.key === "Enter") {
+                    handleSearchSubmit();
+                  }
                 }}
-                onBlur={handleSearchSubmit}
+                onBlur={() => {
+                  setTimeout(() => handleSearchSubmit(), 150);
+                }}
               />
             </div>
 
@@ -253,19 +302,6 @@ function Catalog() {
                 <div className="dropdown-menu">
                   {genreList.map((genre) => (
                     <label key={genre} className="dropdown-item">
-                      <input
-                        type="text"
-                        placeholder="Search by title or author..."
-                        value={searchQuery}
-                        onChange={(e) => {
-                          setSearchQuery(e.target.value);
-                          setSearchSubmitted(false);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") handleSearchSubmit();
-                        }}
-                        onBlur={handleSearchSubmit}
-                      />
                       {genre}
                     </label>
                   ))}
@@ -283,43 +319,31 @@ function Catalog() {
               </tr>
             </thead>
             <tbody>
-              {searchSubmitted ? (
-                isLoadingAI ? (
+              {filteredBooks.length > 0
+                ? filteredBooks.map(renderBookRow)
+                : isLoadingAI
+                ? (
                   <tr>
-                    <td
-                      colSpan="3"
-                      style={{ textAlign: "center", padding: "20px" }}
-                    >
+                    <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
                       Пожалуйста, подождите...
                     </td>
                   </tr>
-                ) : aiResults.length > 0 ? (
-                  aiResults.map(renderBookRow)
-                ) : (
+                )
+                : aiResults.length > 0
+                ? aiResults.map(renderBookRow)
+                : (
                   <tr>
-                    <td
-                      colSpan="3"
-                      style={{ textAlign: "center", padding: "20px" }}
-                    >
+                    <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
                       Ничего не найдено
                     </td>
                   </tr>
-                )
-              ) : (
-                allBooks.map(renderBookRow)
-              )}
-              <tr className="line-extension-row">
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+                )}
             </tbody>
           </table>
         </div>
 
         <div className="recommend-panel">
           <h3>RECOMMEND</h3>
-          {console.log(JSON.parse(localStorage.getItem("recommendations")))}
           {(JSON.parse(localStorage.getItem("recommendations")) || recommendations).map((rec, i) => (
             <div className="recommend-item" key={i}>
               <img
