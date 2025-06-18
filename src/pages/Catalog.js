@@ -108,6 +108,8 @@ const recommendations = [
   },
 ];
 
+let newRec;
+
 const newRecommendations = [
   {
     cover: "covers/ai2.jpg",
@@ -169,14 +171,14 @@ const allBooks = [...books, ...recommendations];
 function Catalog() {
   const navigate = useNavigate();
   const handleBookClick = () => {
-    setNewRecommendations()
     navigate("/about-book");
+    setNewRecommendations()
   };
 
   const setNewRecommendations = () => {
-    setTimeout(() => {
+
+      newRec = true
       localStorage.setItem("recommendations", JSON.stringify(newRecommendations))
-    }, 3000)
   }
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -185,6 +187,7 @@ function Catalog() {
 
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [aiResults, setAIResults] = useState([]);
+  const [recs, setRecs] = useState()
 
   const handleSearchSubmit = () => {
     if (!searchQuery.trim()) {
@@ -267,6 +270,40 @@ function Catalog() {
     </tr>
   );
 
+  const getRecommenations = () => {
+    if (newRec) {
+      setTimeout(() => {
+        setRecs(JSON.parse(localStorage.getItem("recommendations")).map((rec, i) => (
+          <div className="recommend-item" key={i}>
+            <img
+              src={rec.cover}
+              alt={rec.title}
+              className="recommend-cover"
+              onClick={handleBookClick}
+            />
+            <p className="recommend-title">{rec.title}</p>
+            <p className="recommend-author">{rec.author}</p>
+          </div>
+        )))
+      }, 1500)
+    } else {
+      setTimeout(() => {
+        setRecs((recommendations).map((rec, i) => (
+          <div className="recommend-item" key={i}>
+            <img
+              src={rec.cover}
+              alt={rec.title}
+              className="recommend-cover"
+              onClick={handleBookClick}
+            />
+            <p className="recommend-title">{rec.title}</p>
+            <p className="recommend-author">{rec.author}</p>
+          </div>
+        )))
+      }, 0)
+    }
+  }
+
   return (
     <Layout>
       <div className="catalog-container">
@@ -344,18 +381,8 @@ function Catalog() {
 
         <div className="recommend-panel">
           <h3>RECOMMEND</h3>
-          {(JSON.parse(localStorage.getItem("recommendations")) || recommendations).map((rec, i) => (
-            <div className="recommend-item" key={i}>
-              <img
-                src={rec.cover}
-                alt={rec.title}
-                className="recommend-cover"
-                onClick={handleBookClick}
-              />
-              <p className="recommend-title">{rec.title}</p>
-              <p className="recommend-author">{rec.author}</p>
-            </div>
-          ))}
+          {getRecommenations()}
+          {recs}
         </div>
       </div>
     </Layout>
