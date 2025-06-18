@@ -5,15 +5,26 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 function AboutBook() {
+  // const book = {
+  //   cover: "/covers/clean.jpg",
+  //   title: "Чистая архитектура",
+  //   author: "Роберт Мартин",
+  //   description:
+  //     "Роберт Мартин дает прямые и лаконичные ответы на ключевые вопросы архитектуры и дизайна. «Чистую архитектуру» обязаны прочитать разработчики всех уровней, системные аналитики, архитекторы и каждый программист, который желает подняться по карьерной лестнице или хотя бы повлиять на людей, которые занимаются данной работой. Все архитектуры подчиняются одним и тем же правилам! ",
+  //   genre: ["Программирование"],
+  //   fromOwner: "",
+  //   ownerId: 2,
+  // };
+
   const book = {
-    cover: "/covers/clean.jpg",
-    title: "Чистая архитектура",
-    author: "Роберт Мартин",
+    cover: "/covers/solaris.jpg",
+    title: "Солярис",
+    author: "Станислав Лем",
     description:
-      "Роберт Мартин дает прямые и лаконичные ответы на ключевые вопросы архитектуры и дизайна. «Чистую архитектуру» обязаны прочитать разработчики всех уровней, системные аналитики, архитекторы и каждый программист, который желает подняться по карьерной лестнице или хотя бы повлиять на людей, которые занимаются данной работой. Все архитектуры подчиняются одним и тем же правилам! ",
-    genre: ["Программирование"],
+      "",
+    genre: [""],
     fromOwner: "",
-    ownerId: 1,
+    ownerId: 2,
   };
 
   const owner = {
@@ -36,6 +47,21 @@ function AboutBook() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [showRequestNotification, setShowRequestNotification] = useState(false);
+
+  const handleGenerate = () => {
+    const btn = document.querySelector(".book-generate-button");
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const description = document.getElementById("description");
+      const genre = document.getElementById("genre");
+
+      if (description) description.value = "Философская фантастика о попытке установить контакт с разумным океаном на далёкой планете. Через призму науки и психологии роман исследует природу человеческого сознания, вины и невозможности истинного понимания иного разума.";
+      if (genre) genre.value = "Научная фантастика, Роман";
+
+      btn.disabled = false; // включим кнопку обратно
+    }, 1500);
+};
 
   return (
     <Layout>
@@ -75,6 +101,7 @@ function AboutBook() {
 
                 <p className="edit-book-section-title">Description</p>
                 <textarea
+                  id="description"
                   className="book-edit-textarea"
                   placeholder="Text something or generate..."
                   value={description}
@@ -83,6 +110,7 @@ function AboutBook() {
 
                 <p className="edit-book-section-title">Genre</p>
                 <input
+                  id="genre"
                   className="book-edit-input"
                   placeholder="Text something or generate..."
                   value={genre}
@@ -104,7 +132,7 @@ function AboutBook() {
                   >
                     Save
                   </button>
-                  <button className="book-generate-button">
+                  <button className="book-generate-button" onClick={handleGenerate}>
                     Generate and wait
                   </button>
                 </div>
