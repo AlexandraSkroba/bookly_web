@@ -37,7 +37,8 @@ const aiRecommendations = [
   },
   {
     cover: "covers/kabanchik.jpg",
-    title: "Высоконагруженные приложения. Программирование, масштабирование, поддержка",
+    title:
+      "Высоконагруженные приложения. Программирование, масштабирование, поддержка",
     author: "Мартин Клеппман",
   },
 ];
@@ -132,11 +133,11 @@ const newRecommendations = [
     author: "Аркадий и Борис Стругацикие",
   },
   {
-    cover: "covers/solaris.jpg",
-    title: "Солярис",
-    author: "Станислав Лем",
+    cover: "covers/5.png",
+    title: "Голова профессора Доуэля",
+    author: "Александр Беляев",
   },
-]
+];
 
 const aiRecommendations2 = [
   {
@@ -172,14 +173,13 @@ function Catalog() {
   const navigate = useNavigate();
   const handleBookClick = () => {
     navigate("/about-book");
-    setNewRecommendations()
+    setNewRecommendations();
   };
 
   const setNewRecommendations = () => {
-
-      newRec = true
-      localStorage.setItem("recommendations", JSON.stringify(newRecommendations))
-  }
+    newRec = true;
+    localStorage.setItem("recommendations", JSON.stringify(newRecommendations));
+  };
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -187,7 +187,7 @@ function Catalog() {
 
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [aiResults, setAIResults] = useState([]);
-  const [recs, setRecs] = useState()
+  const [recs, setRecs] = useState();
 
   const handleSearchSubmit = () => {
     if (!searchQuery.trim()) {
@@ -212,13 +212,13 @@ function Catalog() {
 
     const hasMatches = [...exactMatches, ...partialMatches].length > 0;
 
-    if (!hasMatches && (lowerQuery === 'грокаем')) {
+    if (!hasMatches && lowerQuery === "грокаем") {
       setIsLoadingAI(true);
       setTimeout(() => {
         setAIResults(aiRecommendations);
         setIsLoadingAI(false);
       }, 2000);
-    } else if(!hasMatches && (lowerQuery === 'игрок')) {
+    } else if (!hasMatches && lowerQuery === "игрок") {
       setIsLoadingAI(true);
       setTimeout(() => {
         setAIResults(aiRecommendations2);
@@ -228,7 +228,6 @@ function Catalog() {
       setAIResults([]);
     }
   };
-
 
   const filteredBooks = allBooks.filter((book) => {
     const matchesQuery =
@@ -241,8 +240,7 @@ function Catalog() {
     return matchesQuery && matchesGenre;
   });
 
-  const showAIRecommendations =
-    searchQuery && filteredBooks.length === 0;
+  const showAIRecommendations = searchQuery && filteredBooks.length === 0;
 
   const similarBooks = allBooks.filter((book) => {
     return (
@@ -273,36 +271,40 @@ function Catalog() {
   const getRecommenations = () => {
     if (newRec) {
       setTimeout(() => {
-        setRecs(JSON.parse(localStorage.getItem("recommendations")).map((rec, i) => (
-          <div className="recommend-item" key={i}>
-            <img
-              src={rec.cover}
-              alt={rec.title}
-              className="recommend-cover"
-              onClick={handleBookClick}
-            />
-            <p className="recommend-title">{rec.title}</p>
-            <p className="recommend-author">{rec.author}</p>
-          </div>
-        )))
-      }, 1500)
+        setRecs(
+          JSON.parse(localStorage.getItem("recommendations")).map((rec, i) => (
+            <div className="recommend-item" key={i}>
+              <img
+                src={rec.cover}
+                alt={rec.title}
+                className="recommend-cover"
+                onClick={handleBookClick}
+              />
+              <p className="recommend-title">{rec.title}</p>
+              <p className="recommend-author">{rec.author}</p>
+            </div>
+          ))
+        );
+      }, 1500);
     } else {
       setTimeout(() => {
-        setRecs((recommendations).map((rec, i) => (
-          <div className="recommend-item" key={i}>
-            <img
-              src={rec.cover}
-              alt={rec.title}
-              className="recommend-cover"
-              onClick={handleBookClick}
-            />
-            <p className="recommend-title">{rec.title}</p>
-            <p className="recommend-author">{rec.author}</p>
-          </div>
-        )))
-      }, 0)
+        setRecs(
+          recommendations.map((rec, i) => (
+            <div className="recommend-item" key={i}>
+              <img
+                src={rec.cover}
+                alt={rec.title}
+                className="recommend-cover"
+                onClick={handleBookClick}
+              />
+              <p className="recommend-title">{rec.title}</p>
+              <p className="recommend-author">{rec.author}</p>
+            </div>
+          ))
+        );
+      }, 0);
     }
-  }
+  };
 
   return (
     <Layout>
@@ -356,25 +358,29 @@ function Catalog() {
               </tr>
             </thead>
             <tbody>
-              {filteredBooks.length > 0
-                ? filteredBooks.map(renderBookRow)
-                : isLoadingAI
-                ? (
-                  <tr>
-                    <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
-                      Пожалуйста, подождите...
-                    </td>
-                  </tr>
-                )
-                : aiResults.length > 0
-                ? aiResults.map(renderBookRow)
-                : (
-                  <tr>
-                    <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
-                      Ничего не найдено
-                    </td>
-                  </tr>
-                )}
+              {filteredBooks.length > 0 ? (
+                filteredBooks.map(renderBookRow)
+              ) : isLoadingAI ? (
+                <tr>
+                  <td
+                    colSpan="3"
+                    style={{ textAlign: "center", padding: "20px" }}
+                  >
+                    Пожалуйста, подождите...
+                  </td>
+                </tr>
+              ) : aiResults.length > 0 ? (
+                aiResults.map(renderBookRow)
+              ) : (
+                <tr>
+                  <td
+                    colSpan="3"
+                    style={{ textAlign: "center", padding: "20px" }}
+                  >
+                    Ничего не найдено
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
